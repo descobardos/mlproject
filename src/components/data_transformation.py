@@ -43,7 +43,7 @@ class DataTransformation:
                 steps = [
                     ('imputer', SimpleImputer(strategy='most_frequent')),
                     ('one_hot_encoder', OneHotEncoder()),
-                    ('scaler', StandardScaler())
+                    ('scaler', StandardScaler(with_mean=False))
                 ]
             )
             
@@ -53,7 +53,7 @@ class DataTransformation:
             
             preprocessor = ColumnTransformer(
                 [
-                    ('num_pipeline', num_pipeline, numerical_columns)
+                    ('num_pipeline', num_pipeline, numerical_columns),
                     ('cat_pipeline', cat_pipeline, categorical_columns)
                 ]
             )
@@ -67,7 +67,6 @@ class DataTransformation:
     def initiate_data_transformation(self, train_path, test_path):
         
         try:   
-    
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
 
@@ -108,4 +107,4 @@ class DataTransformation:
                 self.data_transformation_config.preprocessor_obj_file_path,
             )
         except Exception as e:
-            raise CustomException(e,sys)
+            raise CustomException(e, sys)
